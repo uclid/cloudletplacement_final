@@ -4,6 +4,9 @@ A bifactor approximation algorithm (ACP) to solve the heterogeneous cloudlet pla
 
 We aim to efficiently place  cloudlets  to specific locations in a region to serve the demands of all the end devices (IoT) that require  edge services. We model the region as a two-dimensional space (grid), where cloudlets and devices can exist. The devices could be at any point in the space. On the other hand, we assume only a set of candidate points within the grid are available where the cloudlets can be placed and the devices can be best served from. The candidate points are selected based on the load of user requests and the  location of user demands over a long period.
 
+## Publication Information
+
+
 ## Approaches Implemented
 * IP and LP (solved using CPLEX library)
   * OCP Cost - Optimal Cost Placement 
