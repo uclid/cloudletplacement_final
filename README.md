@@ -13,9 +13,15 @@ We aim to efficiently place  cloudlets  to specific locations in a region to ser
 * ACP - Approximate Cloudlet Placement (our approach) 
 
 
-## Classes Summary
-* Core Classes: Cloudlet, CandidatePoint, EndDevice
-  * Extended Classes (for implemanting ACP algorithm): NewCloudlet, NewCandidatePoint, NewEndDevice
+## Important Classes
+* Core Classes: [Cloudlet](core_classes/base/Cloudlet.java), [CandidatePoint](core_classes/base/CandidatePoint.java), [EndDevice](core_classes/base/EndDevice.java)
+  * Extended Classes (for implemanting ACP algorithm): [NewCloudlet](core_classes/extended/NewCloudlet.java), [NewCandidatePoint](core_classes/extended/NewCandidatePoint.java), [NewEndDevice](core_classes/extended/NewEndDevice.java)
 * CPLEX Model: [CplexCloudletPlacement](cplex_model/algorithm/CplexCloudletPlacement.java), [CplexLPCloudletPlacement](cplex_model/algorithm/CplexLPCloudletPlacement.java)
 * Genetic Algorithm: [GeneticCloudletPlacement](genetic_algorithm/GeneticCloudletPlacement.java)
 * Approximation Algorithm: [ApproxLPRounding](approx_algorithm/ApproxLPRounding.java)
+
+## Data Creation
+
+
+## Running the Code
+* [MainRunner](main_classes/runners/MainRunner.java)
