@@ -6,10 +6,9 @@ We aim to efficiently place  cloudlets  to specific locations in a region to ser
 
 ## Publication Information
 IEEE Transactions on Parallel and Distributed Systems
-* Status: TBD
 * Authors
- * Dixit Bhatta
- * Lena Mashayekhy
+  * Dixit Bhatta
+  * Lena Mashayekhy
 
 ## Approaches Implemented
 * IP and LP (solved using CPLEX library)
