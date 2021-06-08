@@ -6,16 +6,16 @@ We aim to efficiently place  cloudlets  to specific locations in a region to ser
 
 ## Approaches Implemented
 * IP and LP (solved using CPLEX library)
- * OCP Cost - Optimal Cost Placement 
- * OCP Latency - Optimal Latency Placement
- * LP Cost - LP Cost Placment
+  * OCP Cost - Optimal Cost Placement 
+  * OCP Latency - Optimal Latency Placement
+  * LP Cost - LP Cost Placment
 * GACP - Genetic Algorithm Based Cloudlet Placement
 * ACP - Approximate Cloudlet Placement (our approach) 
 
 
 ## Classes Summary
 * Core Classes: Cloudlet, CandidatePoint, EndDevice
- * Extended Classes (for implemanting ACP algorithm): NewCloudlet, NewCandidatePoint, NewEndDevice
+  * Extended Classes (for implemanting ACP algorithm): NewCloudlet, NewCandidatePoint, NewEndDevice
 * CPLEX Model: [CplexCloudletPlacement](cplex_model/algorithm/CplexCloudletPlacement.java), [CplexLPCloudletPlacement](cplex_model/algorithm/CplexLPCloudletPlacement.java)
 * Genetic Algorithm: [GeneticCloudletPlacement](genetic_algorithm/GeneticCloudletPlacement.java)
 * Approximation Algorithm: [ApproxLPRounding](approx_algorithm/ApproxLPRounding.java)
