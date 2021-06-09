@@ -48,7 +48,7 @@ IEEE Transactions on Parallel and Distributed Systems
  * Special runtime considerations
    * `lp_solve` is not required for OCP Cost and OCP Latency, and can be commented out to avoid additional runtime overhead for those methods. 
    * OCP Latency and ACP can be run for all samples without any special changes to the code.
-   * OCP Cost and GACP need modifications  to run across different samples due to the machine limitations and converge behavior of the algorithms.
+   * OCP Cost and GACP need modifications  to run across different samples due to the machine limitations and convergence behavior of the algorithms.
      * OCP Cost approach requires node limited solutions for larger instances since CPLEX cannot converge to optimal solutions for a very long time. For that, `model.setParam(IloCplex.Param.MIP.Limits.Nodes, 15);` must be added after Line 15 in [CplexCloudletPlacement](cplex_model/algorithm/CplexCloudletPlacement.java). Note that the second argument (15) needs to be adjusted for specific datasets for convergence to appropriate accuracy and within reasonable time. [More details in next section]
      * GACP requires coverage values less than 1.0 for complex or larger instances since it may not converge for a long time when full coverage is expected. This value needs to be adjusted for specific datasets using `threshold` in `main()` method ([MainRunner](main_classes/runners/MainRunner.java), line 109). [More details in next section]
 
