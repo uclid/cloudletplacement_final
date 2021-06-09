@@ -14,7 +14,7 @@ IEEE Transactions on Parallel and Distributed Systems
 * IP and LP (solved using CPLEX library)
   * OCP Cost - Optimal Cost Placement 
   * OCP Latency - Optimal Latency Placement
-  * LP Cost - LP Cost Placment
+  * LP Cost - LP Cost Placement
 * GACP - Genetic Algorithm Based Cloudlet Placement
 * ACP - Approximate Cloudlet Placement (our approach) 
 
