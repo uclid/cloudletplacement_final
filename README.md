@@ -38,7 +38,7 @@ IEEE Transactions on Parallel and Distributed Systems
 ## Running the Code
 * Setup and Dependencies
   * You can import the code as a standard Java Project into any IDE, or from command-line in a local diretory.
-  * The main depency required is `cplex.jar` available in [external_lib](external_lib) directory. Add this as an external library to your project. (The process differs depending on the IDE or command-line setup).
+  * The main depency required is `cplex.jar` available in [external_lib](external_lib) directory. Add this as an external JAR to your project. (The process differs depending on the IDE or command-line setup).
 * [MainRunner](main_classes/runners/MainRunner.java)
   * The `main` method runs different approaches based on the first input argument (1-4) to `run()` method in the order below
     1. OCP Cost
@@ -46,9 +46,37 @@ IEEE Transactions on Parallel and Distributed Systems
     3. ACP
     4. GACP
   * Example:- Line 174: `results_summary.add(run(4, cloudlets, points, devices, cost, latency, lp_solve));` will run GACP based on the dataset path set in Line 141 for the sample numbers in the range specified in Line 139 (typically 1 to 30).
-  * `lp_solve` is not required for OCP Cost and OCP Latency and can be commented out to avoid additional runtime overhead.
  * Special runtime considerations
+   * `lp_solve` is not required for OCP Cost and OCP Latency, and can be commented out to avoid additional runtime overhead for those methods. 
    * OCP Latency and ACP can be run for all samples without any special changes to the code.
    * OCP Cost and GACP need modifications  to run across different samples due to the machine limitations and converge behavior of the algorithms.
      * OCP Cost approach requires node limited solutions for larger instances since CPLEX cannot converge to optimal solutions for a very long time. For that, `model.setParam(IloCplex.Param.MIP.Limits.Nodes, 15);` must be added after Line 15 in [CplexCloudletPlacement](cplex_model/algorithm/CplexCloudletPlacement.java). Note that the second argument (15) needs to be adjusted for specific datasets for convergence to appropriate accuracy and within reasonable time. [More details in next section]
-     * GACP requires coverage values less than 1.0 for larger instances since it may not converge for a long time when full coverage is expected. This value needs to be adjusted for specific datasets. [More details in next section]
+     * GACP requires coverage values less than 1.0 for complex or larger instances since it may not converge for a long time when full coverage is expected. This value needs to be adjusted for specific datasets using `threshold` in `main()` method ([MainRunner](main_classes/runners/MainRunner.java), line 109). [More details in next section]
+
+## Specific parameters for OCP Cost and GACP
+* OCP Node Limit Value
+  * Staten Island: Not Needed
+  * Bronx: 75,000
+  * Queens: 70,000
+  * Brooklyn: 30,000
+  * Manhattan: 5,500
+* GACP Coverage `threshold` Value
+  * Staten Island: 0.90 - 1.0 (For samples 1-30, in order: \[1.0,1.0,0.90,0.95,0.95,0.95,0.95,0.95,0.95,1.0,
+					0.95,0.95,0.95,0.95,1.0,0.95,1.0,0.95,0.95,1.0,
+					0.95,1.0,0.95,0.95,0.95,0.95,0.95,0.95,0.95,0.95\])
+  * Bronx: 0.92 (for all)
+  * Queens: 0.90 (for all)
+  * Brooklyn: 0.87 (for all)
+  * Manhattan: 0.87 (for all)
+
+## Interpreting the Output
+* `results_summary` in `main()` method of [MainRunner](main_classes/runners/MainRunner.java) contains the results. It prints multiple lines to the console or log file where each row contains (in order): approach, cost, latency, total runtime.
+* The following results must be tabulated for all 30 samples for 5 boroughs and their mean value must be compared to our results.
+  * Cost
+  * Latency
+* Additonal results such as coverage and solution gap will be consistent if the cost and latency values are reproducible. There is no need to additonally check them.
+* The runtime depends on the machine where the code is run. The specifications used for running them are specified in the paper.
+
+## Result plots
+* Results can be plotted using Python (Seaborn) scripts available in [scripts](scripts).
+* Each file is descriptive in terms of output it is plotting. Some of them already contain the results data and you can simply run them to visualize results.
