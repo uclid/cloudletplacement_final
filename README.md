@@ -40,7 +40,7 @@ IEEE Transactions on Parallel and Distributed Systems
   * You can import the code as a standard Java Project into any IDE, or from command-line in a local diretory.
   * The main depency required is `cplex.jar` available in [external_lib](external_lib) directory. Add this as an external library to your project. (The process differs depending on the IDE or command-line setup).
 * [MainRunner](main_classes/runners/MainRunner.java)
-  * The `main` method runs different approaches based on the first input argument to `run()` method
+  * The `main` method runs different approaches based on the first input argument (1-4) to `run()` method in the order below
     1. OCP Cost
     2. OCP Latency
     3. ACP
@@ -50,5 +50,5 @@ IEEE Transactions on Parallel and Distributed Systems
  * Special runtime considerations
    * OCP Latency and ACP can be run for all samples without any special changes to the code.
    * OCP Cost and GACP need modifications  to run across different samples due to the machine limitations and converge behavior of the algorithms.
-     * OCP Cost approach requires node limited solutions for larger instances since CPLEX cannot converge to optimal solutions for a very long time. For that, `model.setParam(IloCplex.Param.MIP.Limits.Nodes, 15);` must be added after Line 15 in [CplexCloudletPlacement](cplex_model/algorithm/CplexCloudletPlacement.java). Note that the second argument (15) needs to be adjusted for specific datasets for convergence to appropriate accuracy and within reasonable time. [More details below]
-     * GACP requires coverage values less than 1.0 for larger instances since it may not converge for a long time when full coverage is expected. This value needs to be adjusted for specific datasets. [More details below]
+     * OCP Cost approach requires node limited solutions for larger instances since CPLEX cannot converge to optimal solutions for a very long time. For that, `model.setParam(IloCplex.Param.MIP.Limits.Nodes, 15);` must be added after Line 15 in [CplexCloudletPlacement](cplex_model/algorithm/CplexCloudletPlacement.java). Note that the second argument (15) needs to be adjusted for specific datasets for convergence to appropriate accuracy and within reasonable time. [More details in next section]
+     * GACP requires coverage values less than 1.0 for larger instances since it may not converge for a long time when full coverage is expected. This value needs to be adjusted for specific datasets. [More details in next section]
