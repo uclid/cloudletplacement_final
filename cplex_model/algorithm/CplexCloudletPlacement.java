@@ -33,6 +33,21 @@ public class CplexCloudletPlacement {
 		try {
 			//new model object
 			IloCplex model = new IloCplex();
+			//set node limits for larger instances of OCP Cost
+			//here based on number of devices
+			if(mode == true && E.size() > 1000) { //Manhattan
+				model.setParam(IloCplex.Param.MIP.Limits.Nodes, 5500);
+			}
+			else if(mode == true && E.size() > 400){ //Brooklyn
+				model.setParam(IloCplex.Param.MIP.Limits.Nodes, 30000);
+			}
+			else if(mode == true && E.size() > 300) { //Queens
+				model.setParam(IloCplex.Param.MIP.Limits.Nodes, 70000);
+			}
+			else if(mode == true && E.size() > 100) { //Bronx
+				model.setParam(IloCplex.Param.MIP.Limits.Nodes, 75000);
+			}
+			//limit not required for staten island
 			
 			//the decision variable y_{jk}
 			IloIntVar[][] y = new IloIntVar[w][n];
@@ -247,32 +262,32 @@ public class CplexCloudletPlacement {
 				double objValue = model.getObjValue();
 				double costVal = 0.0;
 				double latVal = 0.0;
-				System.out.println("\nObjective value is: " + objValue);
-				System.out.print("\nCloudlet Assignments\n");
+				//System.out.println("\nObjective value is: " + objValue);
+				//System.out.print("\nCloudlet Assignments\n");
 				for(int j = 0; j < w; j++) {
 					for(int k = 0; k < n; k++) {
 						if(model.getValue(y[j][k]) >= 0.99) {
-							System.out.print(" y[" + j + "][" + k + "] = " + model.getValue(y[j][k]));
+							//System.out.print(" y[" + j + "][" + k + "] = " + model.getValue(y[j][k]));
 							costVal += cost[j][k]*model.getValue(y[j][k]);
-							System.out.println("\t" + cost[j][k]);
+							//System.out.println("\t" + cost[j][k]);
 						}
 					}
 					//System.out.println("\n");
 				}
-				System.out.println("\nCost: " + costVal);
+				//System.out.println("\nCost: " + costVal);
 				this.solution_cost = (int)Math.round(costVal);
-				System.out.print("\nDevice Assignments\n");
+				//System.out.print("\nDevice Assignments\n");
 				for(int i = 0; i < v; i++) {
 					for(int k=0; k < n; k++) {
 						if(model.getValue(a[i][k]) >= 0.99) {
-							System.out.print(" a[" + i + "][" + k + "] = " + model.getValue(a[i][k]));
+							//System.out.print(" a[" + i + "][" + k + "] = " + model.getValue(a[i][k]));
 							latVal += latency[i][k]*model.getValue(a[i][k]);
-							System.out.println("\t" + latency[i][k]);
+							//System.out.println("\t" + latency[i][k]);
 						}
 					}
 					//System.out.println("\n");
 				}
-				System.out.println("\nLatency: " + latVal);
+				//System.out.println("\nLatency: " + latVal);
 				this.solution_latency = (int)Math.round(latVal);
 				
 			}
