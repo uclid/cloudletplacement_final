@@ -37,20 +37,19 @@ IEEE Transactions on Parallel and Distributed Systems
 ## Running the Code
 * Setup and Dependencies
   * You can import the code as a standard Java Project into any IDE, or from command-line in a local diretory.
-  * The main depency required is `cplex.jar` available in [external_lib](external_lib) directory. Add this as an external JAR to your project. (The process differs depending on the IDE or command-line setup).
+  * The main depency required is `cplex.jar` available in [external_lib](external_lib) directory. Add this as an external JAR to your project. CPLEX installation is also required for run. (The process differs depending on the IDE or command-line setup).
 * [MainRunner](main_classes/runners/MainRunner.java)
   * The `main` method runs different approaches based on the first input argument (1-4) to `run()` method in the order below
     1. OCP Cost
     2. OCP Latency
     3. ACP
     4. GACP
-  * Example:- Line 174: `results_summary.add(run(4, cloudlets, points, devices, cost, latency, lp_solve));` will run GACP based on the dataset path set in Line 141 for the sample numbers in the range specified in Line 139 (typically 1 to 30).
+  * These have been broken down into individual methods for smooth running. No need to change or update the code. 
  * Special runtime considerations
-   * `lp_solve` is not required for OCP Cost and OCP Latency, and can be commented out to avoid additional runtime overhead for those methods. 
    * OCP Latency and ACP can be run for all samples without any special changes to the code.
-   * OCP Cost and GACP need modifications  to run across different samples due to the machine limitations and convergence behavior of the algorithms.
-     * OCP Cost approach requires node limited solutions for larger instances since CPLEX cannot converge to optimal solutions for a very long time. For that, `model.setParam(IloCplex.Param.MIP.Limits.Nodes, 15);` must be added after Line 15 in [CplexCloudletPlacement](cplex_model/algorithm/CplexCloudletPlacement.java). Note that the second argument (15) needs to be adjusted for specific datasets for convergence to appropriate accuracy and within reasonable time. [More details in next section]
-     * GACP requires coverage values less than 1.0 for complex or larger instances since it may not converge for a long time when full coverage is expected. This value needs to be adjusted for specific datasets using `threshold` in `main()` method ([MainRunner](main_classes/runners/MainRunner.java), line 109). [More details in next section]
+   * OCP Cost and GACP need additional arguments to run across different samples due to the machine limitations and convergence behavior of the algorithms.
+     * OCP Cost approach requires node limited solutions for larger instances since CPLEX cannot converge to optimal solutions for a very long time. For that, a Node Limited Solution is needed. The code is already configured with these node limits for OCP Cost run. No need to modify code for it. [More details in next section]
+     * GACP requires coverage values less than 1.0 for complex or larger instances since it may not converge for a long time when full coverage is expected. This value needs to be adjusted for specific datasets. The code is already configured with these thresholds for GACP run. No need to modify code for it.[More details in next section]
 
 ## Specific parameters for OCP Cost and GACP
 * OCP Node Limit Value
@@ -60,8 +59,8 @@ IEEE Transactions on Parallel and Distributed Systems
   * Brooklyn: 30,000
   * Manhattan: 5,500
 * GACP Coverage `threshold` Value
-  * Staten Island: 0.90 - 1.0 (For samples 1-30, in order: \[1.0,1.0,0.90,0.95,0.95,0.95,0.95,0.95,0.95,1.0,
-					0.95,0.95,0.95,0.95,1.0,0.95,1.0,0.95,0.95,1.0,
+  * Staten Island: 0.90 - 1.0 (For samples 1-30, in order: \[1.0,1.0,0.90,0.95,0.95,0.95,0.95,0.95,0.95,1.0, \\
+					0.95,0.95,0.95,0.95,1.0,0.95,1.0,0.95,0.95,1.0, \\
 					0.95,1.0,0.95,0.95,0.95,0.95,0.95,0.95,0.95,0.95\])
   * Bronx: 0.92 (for all)
   * Queens: 0.90 (for all)
@@ -69,12 +68,13 @@ IEEE Transactions on Parallel and Distributed Systems
   * Manhattan: 0.87 (for all)
 
 ## Interpreting the Output
-* `results_summary` in `main()` method of [MainRunner](main_classes/runners/MainRunner.java) contains the results. It prints multiple lines to the console or log file where each row contains (in order): approach, cost, latency, total runtime.
+* `results_summary` in each method for given approaches of [MainRunner](main_classes/runners/MainRunner.java) contains the results. It prints multiple lines to the console or log file where each row contains (in order): approach, cost, latency, total runtime and other relevant results.
 * The following results must be tabulated for all 30 samples for 5 boroughs and their mean value must be compared to our results.
   * Cost
   * Latency
 * Additonal results such as coverage and solution gap will be consistent if the cost and latency values are reproducible. There is no need to additonally check them.
 * The runtime depends on the machine where the code is run. The specifications used for running them are specified in the paper.
+* The GACP is fed with LP Cost and Number of Cloudlets to speed up runtime. The LP Time from ACP results must be included for corresponding run in GACP to find its total runtime.
 
 ## Result plots
 * Results can be plotted using Python (Seaborn) scripts available in [scripts](scripts).
