@@ -118,7 +118,7 @@ public class ApproxLPRounding {
 					
 					//int lat = latency[d.id -1][currCandidate -1];
 					if(dist <= currCloudlet.radius && 
-							currDevice.memory <= currCloudlet.memory) { 
+							d.memory <= currCloudlet.memory) { 
 						currCloudlet.memory -= d.memory;
 						//System.out.println("Memory"+ currCloudlet.id +" : " + currCloudlet.memory);
 						device_assn.put(d.id, currCandidate);
